@@ -1,0 +1,42 @@
+name: structa
+adopt-info: structa
+base: core20
+website: https://structa.readthedocs.io/
+source-code: https://github.com/waveform80/structa
+issues: https://github.com/waveform80/structa/issues
+license: GPL-2.0-or-later
+summary: Small, semi-magical utility for discerning the structure of large data files
+description: |
+  structa is a small, semi-magical utility for discerning the "overall
+  structure" of large data files. Typically this is something like a document
+  oriented database in JSON format, or a CSV file of a database dump, or a YAML
+  document.
+compression: lzo  # because xz is *hilariously* slow
+confinement: strict
+
+apps:
+    structa:
+        command: bin/structa
+        plugs: [home]
+
+parts:
+    structa:
+        plugin: python
+        source: https://github.com/waveform80/structa.git
+        override-pull: |
+            snapcraftctl pull
+            snapcraftctl set-version $(git describe)
+            if [ "$(git rev-list --tags --max-count=1)" = "$(git rev-list --max-count=1 HEAD)" ]; then
+                snapcraftctl set-grade stable
+            else
+                snapcraftctl set-grade devel
+            fi
+        python-packages:
+            # Use a horrid hack to include the [yaml] dependencies; doesn't
+            # seem to be a proper way to do this with snapcraft...
+            - ruamel.yaml
+            # ... and another horrid hack because, when python-packages is
+            # specified manually things like "wheel" don't get included by
+            # default. *headdesk*
+            - setuptools
+            - wheel
