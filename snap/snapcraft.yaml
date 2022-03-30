@@ -27,7 +27,7 @@ parts:
         override-pull: |
             snapcraftctl pull
             snapcraftctl set-version $(git describe)
-        stage-packages:
+        build-packages:
             - libxml2-dev
             - libxslt1-dev
         python-packages:
