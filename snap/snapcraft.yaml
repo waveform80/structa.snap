@@ -23,20 +23,10 @@ apps:
 parts:
     structa:
         plugin: python
-        source: https://github.com/waveform80/structa.git
+        source: "structa[yaml] @ https://github.com/waveform80/structa.git"
         override-pull: |
             snapcraftctl pull
             snapcraftctl set-version $(git describe)
         build-packages:
             - libxml2-dev
             - libxslt1-dev
-        python-packages:
-            # Include setuptools and wheel manually because, if python-packages
-            # is specified, they aren't included automatically. And include
-            # them first otherwise later things relying upon wheel won't
-            # install correct on certain architectures. Because ... reasons.
-            - setuptools
-            - wheel
-            # Use a horrid hack to include the [yaml] dependencies; doesn't
-            # seem to be a proper way to do this with snapcraft...
-            - ruamel.yaml
