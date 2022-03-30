@@ -32,11 +32,12 @@ parts:
                 snapcraftctl set-grade devel
             fi
         python-packages:
+            # Include setuptools and wheel manually because, if python-packages
+            # is specified, they aren't included automatically. And include
+            # them first otherwise later things relying upon wheel won't
+            # install correct on certain architectures. Because ... reasons.
+            - setuptools
+            - wheel
             # Use a horrid hack to include the [yaml] dependencies; doesn't
             # seem to be a proper way to do this with snapcraft...
             - ruamel.yaml
-            # ... and another horrid hack because, when python-packages is
-            # specified manually things like "wheel" don't get included by
-            # default. *headdesk*
-            - setuptools
-            - wheel
