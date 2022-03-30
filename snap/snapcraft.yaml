@@ -12,6 +12,7 @@ description: |
   oriented database in JSON format, or a CSV file of a database dump, or a YAML
   document.
 compression: lzo  # because xz is *hilariously* slow
+grade: stable
 confinement: strict
 
 apps:
@@ -26,11 +27,6 @@ parts:
         override-pull: |
             snapcraftctl pull
             snapcraftctl set-version $(git describe)
-            if [ "$(git rev-list --tags --max-count=1)" = "$(git rev-list --max-count=1 HEAD)" ]; then
-                snapcraftctl set-grade stable
-            else
-                snapcraftctl set-grade devel
-            fi
         stage-packages:
             - libxml2-dev
             - libxslt1-dev
