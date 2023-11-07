@@ -1,6 +1,6 @@
 name: structa
 adopt-info: structa
-base: core20
+base: core22
 website: https://structa.readthedocs.io/
 source-code: https://github.com/waveform80/structa
 issues: https://github.com/waveform80/structa/issues
@@ -25,17 +25,17 @@ parts:
         plugin: python
         source: https://github.com/waveform80/structa.git
         override-pull: |
-            snapcraftctl pull
-            snapcraftctl set-version $(git describe)
+            craftctl default
+            craftctl set version=$(git describe)
         override-build: |
-            python3 -m venv ${SNAPCRAFT_PART_INSTALL}
-            source ${SNAPCRAFT_PART_INSTALL}/bin/activate
+            python3 -m venv ${CRAFT_PART_INSTALL}
+            source ${CRAFT_PART_INSTALL}/bin/activate
             pip install -U pip setuptools wheel
             pip install -U ".[yaml]"
             sed -i -e \
-                "1 s,^#\!${SNAPCRAFT_PART_INSTALL}/bin/python3\$,#\!/usr/bin/env python3," \
-                 $(find ${SNAPCRAFT_PART_INSTALL} -type f -executable)
-            ln -sf $(readlink -e $(which python3)) ${SNAPCRAFT_PART_INSTALL}/bin/python3
+                "1 s,^#\!${CRAFT_PART_INSTALL}/bin/python3\$,#\!/usr/bin/env python3," \
+                 $(find ${CRAFT_PART_INSTALL} -type f -executable)
+            ln -sf $(readlink -e $(which python3)) ${CRAFT_PART_INSTALL}/bin/python3
         build-packages:
             - libxml2-dev
             - libxslt1-dev
